@@ -20,13 +20,7 @@ grad = zeros(size(theta));
 %
 % Hint: The computation of the cost function and gradients can be
 %       efficiently vectorized. For example, consider the computation
-%J = ((-y'*log (sigmoid(X*theta)) - (1-y')*(log(1-sigmoid(X*theta))))/m) + (lambda/2*m)*(sumsq(theta) - theta(1)^2);
-J = ((-y'*log (sigmoid(X*theta)) - (1-y')*(log(1-sigmoid(X*theta))))/m) + (lambda/2*m)*(sumsq(theta) - theta(1)^2);
-
-
-%%%grad = (X'*(sigmoid(X*theta) - y))/m + (lambda/m)*(theta);
-
-%%%grad(1) = [(X'*(sigmoid(X*theta) - y))/m](1);
+%
 %           sigmoid(X * theta)
 %
 %       Each row of the resulting matrix will contain the value of the
@@ -36,20 +30,17 @@ J = ((-y'*log (sigmoid(X*theta)) - (1-y')*(log(1-sigmoid(X*theta))))/m) + (lambd
 % Hint: When computing the gradient of the regularized cost function, 
 %       there're many possible vectorized solutions, but one solution
 %       looks like:
- grad = (X'*(sigmoid(X*theta) - y))/m;
- temp = theta; 
- temp(1) = 0;   % because we don't add anything for j = 0  
- grad = grad + (lambda/m)*(theta);
+%           grad = (unregularized gradient for logistic regression)
+%           temp = theta; 
+%           temp(1) = 0;   % because we don't add anything for j = 0  
+%           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
-
-
-
-
-
-
-
-
+sig = sigmoid(X * theta);
+cost = -y .* log(sig) - (1 - y) .* log(1 - sig);
+thetaNoZero = [ [ 0 ]; theta([2:length(theta)]) ];
+J = (1 / m) * sum(cost) + (lambda / (2 * m)) * sum(thetaNoZero .^ 2);
+grad = (1 / m) .* (X' * (sig - y)) + (lambda / m) * thetaNoZero;
 
 % =============================================================
 
