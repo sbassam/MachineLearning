@@ -44,8 +44,14 @@ a2 = sigmoid(z2);
 a2 = [ones(size(a2), 1) a2];
 z3 = a2*Theta2';
 a3 = sigmoid(z3);
-temp = sum(log(a3), 2)
-J = (-y_matrix'*log(a3) - (1 - y_matrix')*log(1-a3))/m;
+%temp = sum(log(a3), 2)
+T1 = Theta1(:, 2:end);
+sqrT1 = sum(sum(T1.^2));
+T2 = Theta2(:, 2:end);
+sqrT2 = sum(sum(T2.^2));
+Reg = (sqrT1+sqrT2)*lambda*0.5/m;
+J = ((-y_matrix.*log(a3) - (1 - y_matrix).*log(1-a3))/m) + Reg;
+J = sum(sum(J));
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
