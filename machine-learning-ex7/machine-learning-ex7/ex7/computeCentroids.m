@@ -15,7 +15,7 @@ function centroids = computeCentroids(X, idx, K)
 
 % You need to return the following variables correctly.
 centroids = zeros(K, n);
-
+count = zeros(K, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Go over every centroid and compute mean of all points that
@@ -26,10 +26,15 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+Xidx = [X idx];
 
+for i = 1:m
+  centroids(Xidx(i, n+1),:) = centroids(Xidx(i, n+1),:) + Xidx(i, 1:n);
+  count(Xidx(i, n+1)) = count(Xidx(i, n+1)) + 1;
+endfor
 
-
-
+count(count == 0 ) = 1;
+centroids = centroids./count;
 
 
 
